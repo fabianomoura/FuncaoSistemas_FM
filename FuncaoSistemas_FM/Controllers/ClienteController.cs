@@ -58,6 +58,7 @@ namespace FuncaoSistemas_FM.Controllers
                     return Json("Cadastro efetuado com sucesso");
                 } else
                 {
+                    Response.StatusCode = 400;
                     return Json("CPF inválido!");
                 }
             }
@@ -105,6 +106,7 @@ namespace FuncaoSistemas_FM.Controllers
                     return Json("Cadastro alterado com sucesso");
                 } else
                 {
+                    Response.StatusCode = 400;
                     return Json("CPF inválido!");
                 }
 

@@ -13,12 +13,12 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
 <h2>@Html.Raw(ViewBag.Title)</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formCadastro" }))
 {
     @Html.AntiForgeryToken()
 
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger", id="erro_form" })
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -107,7 +107,7 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
                     <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#modalBeneficiario">Beneficiários</button>
                 </div>
                 <div class="pull-right">
-                    <input type="submit" value="Salvar" class="btn btn-sm btn-success" />
+                    <input type="submit" value="Salvar" class="btn btn-sm btn-success" id="btn-salvar"/>
                     @Html.ActionLink("Voltar", "Index", "Cliente", new { }, new { @class = "btn btn-sm btn-danger" })
                 </div>
             </div>
@@ -120,9 +120,31 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/inputmask")
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function () {                        
             $("#doc").inputmask("999.999.999-99");
             $("#docCPF").inputmask("999.999.999-99");
-        });
+            $("#btn-salvar").bind("click", function () {
+                $.ajax({
+                    url: urlPOST                  
+                    , data: $('#formCadastro *').serialize()
+                    , type: 'POST'
+                    , dataType: 'json'
+                    , success: function (json) {
+
+                        if (!json.status) {
+                            alert(json.msg);
+                            return false;
+                        }
+                        
+                        alert('Cadastro efetuado');
+
+                        return true;
+                    }
+                    , error: function (json) {
+                        alert(json.msg);
+                    }
+                });
+            })
+        });        
     </script>
 }
