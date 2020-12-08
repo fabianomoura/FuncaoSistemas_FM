@@ -125,25 +125,52 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
             $("#docCPF").inputmask("999.999.999-99");
             $("#btn-salvar").bind("click", function () {
                 $.ajax({
-                    url: urlPOST                  
+                    url: "/Cliente/Incluir"                  
                     , data: $('#formCadastro *').serialize()
                     , type: 'POST'
                     , dataType: 'json'
                     , success: function (json) {
-
-                        if (!json.status) {
-                            alert(json.msg);
-                            return false;
-                        }
-                        
-                        alert('Cadastro efetuado');
-
+                        ModalDialog("Sucesso", json.responseText);
+                        $("formCadastro")[0].reset();                        
                         return true;
                     }
                     , error: function (json) {
-                        alert(json.msg);
+                        if (json.status == 400) {
+                            ModalDialog("Ocorreu um erro", json.responseText);
+                            return false;
+                        } else if (json.status == 500) {
+                            ModalDialog("Ocorreu um erro", "Erro Interno no Servidor");
+                            return false;
+                        } else {
+                            ModalDialog("Erro Desconhecido", json.responseText);
+                            return false;
+                        }                        
                     }
                 });
+
+                function ModalDialog(titulo, texto) {
+                    var random = Math.random().toString().replace('.', '');
+                    var texto = '<div id="' + random + '" class="modal fade">                                                               ' +
+                        '        <div class="modal-dialog">                                                                                 ' +
+                        '            <div class="modal-content">                                                                            ' +
+                        '                <div class="modal-header">                                                                         ' +
+                        '                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>         ' +
+                        '                    <h4 class="modal-title">' + titulo + '</h4>                                                    ' +
+                        '                </div>                                                                                             ' +
+                        '                <div class="modal-body">                                                                           ' +
+                        '                    <p>' + texto + '</p>                                                                           ' +
+                        '                </div>                                                                                             ' +
+                        '                <div class="modal-footer">                                                                         ' +
+                        '                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>             ' +
+                        '                                                                                                                   ' +
+                        '                </div>                                                                                             ' +
+                        '            </div><!-- /.modal-content -->                                                                         ' +
+                        '  </div><!-- /.modal-dialog -->                                                                                    ' +
+                        '</div> <!-- /.modal -->                                                                                        ';
+
+                    $('body').append(texto);
+                    $('#' + random).modal('show');
+                };
             })
         });        
     </script>

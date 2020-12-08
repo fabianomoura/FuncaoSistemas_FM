@@ -54,12 +54,12 @@ namespace FuncaoSistemas_FM.Controllers
                         CPF = model.CPF
                     });
 
-
+                    Response.StatusCode = 200;
                     return Json("Cadastro efetuado com sucesso");
                 } else
                 {
-                    Response.StatusCode = 400;
-                    return Json("CPF inválido!");
+                    Response.StatusCode = 400;                    
+                    return Json("CPF Inválido!");
                 }
             }
         }
