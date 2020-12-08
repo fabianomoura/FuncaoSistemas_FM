@@ -38,23 +38,28 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-
-                model.Id = bo.Incluir(new Cliente()
+                if (ValidaCPF(model.CPF))
                 {
-                    CEP = model.CEP,
-                    Cidade = model.Cidade,
-                    Email = model.Email,
-                    Estado = model.Estado,
-                    Logradouro = model.Logradouro,
-                    Nacionalidade = model.Nacionalidade,
-                    Nome = model.Nome,
-                    Sobrenome = model.Sobrenome,
-                    Telefone = model.Telefone,
-                    CPF = model.CPF
-                });
+                    model.Id = bo.Incluir(new Cliente()
+                    {
+                        CEP = model.CEP,
+                        Cidade = model.Cidade,
+                        Email = model.Email,
+                        Estado = model.Estado,
+                        Logradouro = model.Logradouro,
+                        Nacionalidade = model.Nacionalidade,
+                        Nome = model.Nome,
+                        Sobrenome = model.Sobrenome,
+                        Telefone = model.Telefone,
+                        CPF = model.CPF
+                    });
 
 
-                return Json("Cadastro efetuado com sucesso");
+                    return Json("Cadastro efetuado com sucesso");
+                } else
+                {
+                    return Json("CPF inválido!");
+                }
             }
         }
 
@@ -80,23 +85,30 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-
-                bo.Alterar(new Cliente()
+                if (ValidaCPF(model.CPF))
                 {
-                    Id = model.Id,
-                    CEP = model.CEP,
-                    Cidade = model.Cidade,
-                    Email = model.Email,
-                    Estado = model.Estado,
-                    Logradouro = model.Logradouro,
-                    Nacionalidade = model.Nacionalidade,
-                    Nome = model.Nome,
-                    Sobrenome = model.Sobrenome,
-                    Telefone = model.Telefone,
-                    CPF = FormataCPF(model.CPF)
-                });
+                    bo.Alterar(new Cliente()
+                    {
+                        Id = model.Id,
+                        CEP = model.CEP,
+                        Cidade = model.Cidade,
+                        Email = model.Email,
+                        Estado = model.Estado,
+                        Logradouro = model.Logradouro,
+                        Nacionalidade = model.Nacionalidade,
+                        Nome = model.Nome,
+                        Sobrenome = model.Sobrenome,
+                        Telefone = model.Telefone,
+                        CPF = FormataCPF(model.CPF)
+                    });
 
-                return Json("Cadastro alterado com sucesso");
+                    return Json("Cadastro alterado com sucesso");
+                } else
+                {
+                    return Json("CPF inválido!");
+                }
+
+                
             }
         }
 
