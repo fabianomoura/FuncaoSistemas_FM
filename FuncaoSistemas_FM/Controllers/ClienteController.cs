@@ -54,11 +54,27 @@ namespace FuncaoSistemas_FM.Controllers
                         CPF = model.CPF
                     });
 
+                    if (model.Beneficiarios.Count() > 0)
+                    {
+                        BoBeneficiario boben = new BoBeneficiario();
+
+                        foreach (var beneficiario in model.Beneficiarios)
+                        {
+                            beneficiario.Id = boben.Incluir(new Beneficiario()
+                            {
+                                CPF = beneficiario.CPF,
+                                Nome = beneficiario.Nome,
+                                ClienteModelID = beneficiario.ClienteModelID
+                            });
+                        }
+                    }                    
+
                     Response.StatusCode = 200;
                     return Json("Cadastro efetuado com sucesso");
-                } else
+                }
+                else
                 {
-                    Response.StatusCode = 400;                    
+                    Response.StatusCode = 400;
                     return Json("CPF Inválido!");
                 }
             }
@@ -100,17 +116,34 @@ namespace FuncaoSistemas_FM.Controllers
                         Nome = model.Nome,
                         Sobrenome = model.Sobrenome,
                         Telefone = model.Telefone,
-                        CPF = FormataCPF(model.CPF)
+                        CPF = FormataCPF(model.CPF)                        
                     });
 
+                    if (model.Beneficiarios.Count() > 0)
+                    {
+                        BoBeneficiario boben = new BoBeneficiario();
+                        boben.Excluir(model.Id);
+
+                        foreach (var beneficiario in model.Beneficiarios)
+                        {
+                            beneficiario.Id = boben.Incluir(new Beneficiario()
+                            {
+                                CPF = beneficiario.CPF,
+                                Nome = beneficiario.Nome,
+                                ClienteModelID = beneficiario.ClienteModelID
+                            });
+                        }
+                    }                    
+
                     return Json("Cadastro alterado com sucesso");
-                } else
+                }
+                else
                 {
                     Response.StatusCode = 400;
                     return Json("CPF inválido!");
                 }
 
-                
+
             }
         }
 
@@ -138,9 +171,23 @@ namespace FuncaoSistemas_FM.Controllers
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
                     Telefone = cliente.Telefone,
-                    CPF = cliente.CPF
-
+                    CPF = cliente.CPF                    
                 };
+                
+                if (model.Beneficiarios.Count() > 0)
+                {
+                    boben.Excluir(model.Id);
+
+                    foreach (var beneficiario in model.Beneficiarios)
+                    {
+                        beneficiario.Id = boben.Incluir(new Beneficiario()
+                        {
+                            CPF = beneficiario.CPF,
+                            Nome = beneficiario.Nome,
+                            ClienteModelID = beneficiario.ClienteModelID
+                        });
+                    }
+                }                
 
             }
 
@@ -166,10 +213,12 @@ namespace FuncaoSistemas_FM.Controllers
                 List<Cliente> clientes = new BoCliente().Pesquisa(jtStartIndex, jtPageSize, campo, crescente.Equals("ASC", StringComparison.InvariantCultureIgnoreCase), out qtd);
 
                 //Return result to jTable
+                Response.StatusCode = 200;
                 return Json(new { Result = "OK", Records = clientes, TotalRecordCount = qtd });
             }
             catch (Exception ex)
             {
+                Response.StatusCode = 400;
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }

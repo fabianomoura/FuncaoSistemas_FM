@@ -32,6 +32,12 @@ namespace Infra_FM.BLL
             ben.Excluir(Cpf, Idcliente);
         }
 
+        public void Excluir(long Idcliente)
+        {           
+            DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();
+            ben.Excluir(Idcliente);
+        }
+
         public List<DML.Beneficiario> Listar(long Idcliente)
         {
             DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();

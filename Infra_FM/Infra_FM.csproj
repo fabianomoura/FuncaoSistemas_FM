@@ -70,8 +70,9 @@
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_AltBenef.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_ConsBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_ConsBeneficiarioV2.sql" />
-    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_DelBeneficiario.sql" />
-    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_IncBeneficiario.sql" />
+    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_DelBeneficiario2.sql" />
+    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_DelBeneficiario3.sql" />
+    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_IncBeneficiario2.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_PesqBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_VerificaBeneficiario.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_AltCliente.sql" />

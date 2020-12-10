@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -16,9 +17,10 @@ namespace FuncaoSistemas_FM.Models
         [Required(ErrorMessage = "Digite um CPF válido")]
         public string CPF { get; set; }
 
-        [Required]
+        /*[Required]
+        [ForeignKey("ClienteModel")]*/
         public int ClienteModelID { get; set; }
 
-        public ClienteModel Cliente { get; set; }
+        /*public virtual ClienteModel Cliente { get; set; }*/
     }
 }

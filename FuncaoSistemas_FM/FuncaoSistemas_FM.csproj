@@ -240,7 +240,7 @@
     <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Clientes\FI.AltClientes.js" />
-    <Content Include="Scripts\Clientes\FI.Clientes.js" />
+    <None Include="Scripts\Clientes\FI.Clientes.js_" />
     <Content Include="Scripts\Clientes\FI.ListClientes.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\inputmask.js" />

@@ -18,7 +18,7 @@ namespace Infra_FM.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", beneficiario.CPF));
             parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", beneficiario.ClienteModelID));
 
-            DataSet ds = base.Consultar("FI_SP_IncBeneficiario", parametros);
+            DataSet ds = base.Consultar("FI_SP_IncBeneficiario2", parametros);
             long ret = 0;
             if (ds.Tables[0].Rows.Count > 0)
                 long.TryParse(ds.Tables[0].Rows[0][0].ToString(), out ret);
@@ -103,7 +103,16 @@ namespace Infra_FM.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", Idcliente));
             parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", Cpf));            
 
-            base.Executar("FI_SP_DelBeneficiario", parametros);
+            base.Executar("FI_SP_DelBeneficiario2", parametros);
+        }
+
+        internal void Excluir(long Idcliente)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
+
+            parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", Idcliente));            
+
+            base.Executar("FI_SP_DelBeneficiario3", parametros);
         }
 
         private List<DML.Beneficiario> Converter(DataSet ds)
