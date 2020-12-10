@@ -22,8 +22,8 @@ BEGIN
 
 	SET @CAMPOS = '@iniciarEm int,@quantidade int'
 	SET @SCRIPT = 
-	'SELECT ID, NOME, CPF FROM
-		(SELECT ROW_NUMBER() OVER (ORDER BY ' + @ORDER + ') AS Row, ID, NOME, CPF FROM BENEFICIARIOS WITH(NOLOCK))
+	'SELECT ID, NOME, CPF, IDCLIENTE FROM
+		(SELECT ROW_NUMBER() OVER (ORDER BY ' + @ORDER + ') AS Row, ID, NOME, CPF, IDCLIENTE FROM BENEFICIARIOS WITH(NOLOCK))
 		AS BeneficiariosWithRowNumbers
 	WHERE Row > @iniciarEm AND Row <= (@iniciarEm+@quantidade) and IDCLIENTE = '+ @idCliente +' ORDER BY'
 	

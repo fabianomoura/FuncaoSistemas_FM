@@ -1,9 +1,8 @@
-﻿@model FuncaoSistemas_FM.Models.BeneficiarioModel
-
+﻿
 @{
     ViewBag.Title = "Beneficiários";
+    FuncaoSistemas_FM.Models.BeneficiarioModel model2 = new FuncaoSistemas_FM.Models.BeneficiarioModel();
     ICollection<FuncaoSistemas_FM.Models.BeneficiarioModel> beneficiarios = new List<FuncaoSistemas_FM.Models.BeneficiarioModel>();
-    ViewBag.data = beneficiarios;
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "formBeneficiario" }))
@@ -17,16 +16,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>@Html.Raw(ViewBag.Title)</h2>
-                    <div class="row">                        
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="pull-left">
                                 <button class="btn btn-sm btn-success" id="btn-incluir-beneficiario">Incluir</button>
                             </div>
                         </div>
                     </div>
-                    <br/>
+                    <br />
                     <div id="div-beneficiarios">
-
+                       
                     </div>
                     <table id="gridBeneficiarios" class="table"></table>
                     <div class="row">

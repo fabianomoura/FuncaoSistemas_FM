@@ -26,6 +26,7 @@ namespace FuncaoSistemas_FM.Controllers
         public JsonResult Incluir(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
+            BoBeneficiario boben = new BoBeneficiario();
 
             if (!this.ModelState.IsValid)
             {
@@ -55,9 +56,7 @@ namespace FuncaoSistemas_FM.Controllers
                     });
 
                     if (model.Beneficiarios.Count() > 0)
-                    {
-                        BoBeneficiario boben = new BoBeneficiario();
-
+                    {                        
                         long ClienteID = model.Id;
 
                         foreach (var beneficiario in model.Beneficiarios)
@@ -92,6 +91,7 @@ namespace FuncaoSistemas_FM.Controllers
         public JsonResult Alterar(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
+            BoBeneficiario boben = new BoBeneficiario();
 
             if (!this.ModelState.IsValid)
             {
@@ -122,8 +122,7 @@ namespace FuncaoSistemas_FM.Controllers
                     });
 
                     if (model.Beneficiarios.Count() > 0)
-                    {
-                        BoBeneficiario boben = new BoBeneficiario();
+                    {                        
                         boben.Excluir(model.Id);
 
                         foreach (var beneficiario in model.Beneficiarios)
@@ -191,8 +190,7 @@ namespace FuncaoSistemas_FM.Controllers
                     }
                 }
 
-            }
-
+            }            
             return View(model);
         }
 

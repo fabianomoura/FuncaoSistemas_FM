@@ -79,7 +79,7 @@ namespace Infra_FM.DAL
           
             parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", Idcliente));
 
-            DataSet ds = base.Consultar("FI_SP_ConsBeneficiarioV2", parametros);
+            DataSet ds = base.Consultar("FI_SP_ConsBeneficiario", parametros);
             List<DML.Beneficiario> ben = Converter(ds);
 
             return ben;
@@ -124,7 +124,7 @@ namespace Infra_FM.DAL
                 {
                     DML.Beneficiario ben = new DML.Beneficiario();
                     ben.Id = row.Field<long>("Id");
-                    ben.ClienteModelID = row.Field<int>("IDCLIENTE");
+                    ben.ClienteModelID = row.Field<long>("IDCLIENTE");
                     ben.Nome = row.Field<string>("Nome");                    
                     ben.CPF = row.Field<string>("CPF");
                     lista.Add(ben);
