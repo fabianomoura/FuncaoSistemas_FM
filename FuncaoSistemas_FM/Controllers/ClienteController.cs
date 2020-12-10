@@ -38,7 +38,7 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-                if (ValidaCPF(model.CPF))
+                if (Models.Util.ValidaCPF(model.CPF))
                 {
                     model.Id = bo.Incluir(new Cliente()
                     {
@@ -103,7 +103,7 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-                if (ValidaCPF(model.CPF))
+                if (Models.Util.ValidaCPF(model.CPF))
                 {
                     bo.Alterar(new Cliente()
                     {
@@ -117,7 +117,7 @@ namespace FuncaoSistemas_FM.Controllers
                         Nome = model.Nome,
                         Sobrenome = model.Sobrenome,
                         Telefone = model.Telefone,
-                        CPF = FormataCPF(model.CPF)
+                        CPF = Models.Util.FormataCPF(model.CPF)
                     });
 
                     if (model.Beneficiarios.Count() > 0)
@@ -220,119 +220,6 @@ namespace FuncaoSistemas_FM.Controllers
                 Response.StatusCode = 400;
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
-        }
-
-        [HttpPost]
-        public JsonResult AdicionaBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
-        {
-            try
-            {
-                cliente.Beneficiarios.Add(beneficiario);
-                int qtd = cliente.Beneficiarios.Count();
-                Response.StatusCode = 200;
-                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 400;
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public JsonResult ExcluiBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
-        {
-            try
-            {
-                cliente.Beneficiarios.Remove(beneficiario);
-                int qtd = cliente.Beneficiarios.Count();
-                Response.StatusCode = 200;
-                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 400;
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public JsonResult AlteraBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
-        {
-            try
-            {
-                cliente.Beneficiarios.Remove(beneficiario);
-                cliente.Beneficiarios.Add(beneficiario);
-                int qtd = cliente.Beneficiarios.Count();
-                Response.StatusCode = 200;
-                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 400;
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
-
-        private bool ValidaCPF(string Cpf)
-        {
-            string valor;
-            if (Cpf.Length > 11)
-                valor = FormataCPF(Cpf);
-            else
-                valor = Cpf;
-            bool igual = true;
-
-            for (int i = 1; i < 11 && igual; i++)
-                if (valor[i] != valor[0])
-                    igual = false;
-
-            if (igual || valor == "12345678909")
-                return false;
-
-            int[] numeros = new int[11];
-
-            for (int i = 0; i < 11; i++)
-                numeros[i] = int.Parse(valor[i].ToString());
-
-            int soma = 0;
-            for (int i = 0; i < 9; i++)
-                soma += (10 - i) * numeros[i];
-
-            int resultado = soma % 11;
-
-            if (resultado == 1 || resultado == 0)
-            {
-                if (numeros[9] != 0)
-                    return false;
-            }
-            else if (numeros[9] != 11 - resultado)
-                return false;
-
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += (11 - i) * numeros[i];
-
-            resultado = soma % 11;
-
-            if (resultado == 1 || resultado == 0)
-            {
-                if (numeros[10] != 0)
-                    return false;
-            }
-            else
-              if (numeros[10] != 11 - resultado)
-                return false;
-
-            return true;
-        }
-
-        private string FormataCPF(string Cpf)
-        {
-            string valor = Cpf;
-            valor = valor.Replace(".", "");
-            valor = valor.Replace("-", "");
-            return valor;
-        }
+        }        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Infra_FM.BLL;
 using Infra_FM.DML;
 
 namespace Infra_FM.DAL
@@ -27,7 +28,7 @@ namespace Infra_FM.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("Logradouro", cliente.Logradouro));
             parametros.Add(new System.Data.SqlClient.SqlParameter("Email", cliente.Email));
             parametros.Add(new System.Data.SqlClient.SqlParameter("Telefone", cliente.Telefone));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", FormataCPF(cliente.CPF)));            
+            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", Util.FormataCPF(cliente.CPF)));            
 
             DataSet ds = base.Consultar("FI_SP_IncClienteV2", parametros);
             long ret = 0;
@@ -117,7 +118,7 @@ namespace Infra_FM.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("Logradouro", cliente.Logradouro));
             parametros.Add(new System.Data.SqlClient.SqlParameter("Email", cliente.Email));
             parametros.Add(new System.Data.SqlClient.SqlParameter("Telefone", cliente.Telefone));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", FormataCPF(cliente.CPF)));
+            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", Util.FormataCPF(cliente.CPF)));
             parametros.Add(new System.Data.SqlClient.SqlParameter("ID", cliente.Id));
 
             base.Executar("FI_SP_AltCliente", parametros);
@@ -161,14 +162,6 @@ namespace Infra_FM.DAL
             }
 
             return lista;
-        }
-
-        private string FormataCPF(string Cpf)
-        {
-            string valor = Cpf;
-            valor = valor.Replace(".", "");
-            valor = valor.Replace("-", "");
-            return valor;
         }
     }
 }
