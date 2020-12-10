@@ -1,11 +1,12 @@
-﻿@model FuncaoSistemas_FM.Models.ClienteModel
+﻿@model FuncaoSistemas_FM.Models.BeneficiarioModel
 
 @{
     ViewBag.Title = "Beneficiários";
-
+    ICollection<FuncaoSistemas_FM.Models.BeneficiarioModel> beneficiarios = new List<FuncaoSistemas_FM.Models.BeneficiarioModel>();
+    ViewBag.data = beneficiarios;
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Get, new { id = "formBeneficiario" }))
 {
     @Html.AntiForgeryToken()
 
@@ -16,27 +17,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>@Html.Raw(ViewBag.Title)</h2>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", @placeholder = "Digite no formato 999.999.999-99", @maxlength = "14", @id ="docCPF" } })
-                                @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
+                    <div class="row">                        
+                        <div class="col-md-12">
+                            <div class="pull-left">
+                                <button class="btn btn-sm btn-success" id="btn-incluir-beneficiario">Incluir</button>
                             </div>
                         </div>
+                    </div>
+                    <br/>
+                    <div id="div-beneficiarios">
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ex.: João", @maxlength = "50" } })
-                                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="pull-right">
-                                <input type="submit" value="Incluir" class="btn btn-sm btn-success" />
-                            </div>
-                        </div>
                     </div>
                     <table id="gridBeneficiarios" class="table"></table>
                     <div class="row">

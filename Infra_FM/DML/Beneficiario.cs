@@ -14,7 +14,7 @@ namespace Infra_FM.DML
        
         public string CPF { get; set; }
         
-        public int ClienteModelID { get; set; }
+        public long ClienteModelID { get; set; }
 
         //public Cliente Cliente { get; set; }
     }

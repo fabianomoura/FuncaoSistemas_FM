@@ -19,7 +19,7 @@ namespace FuncaoSistemas_FM.Models
 
         /*[Required]
         [ForeignKey("ClienteModel")]*/
-        public int ClienteModelID { get; set; }
+        public long ClienteModelID { get; set; }
 
         /*public virtual ClienteModel Cliente { get; set; }*/
     }

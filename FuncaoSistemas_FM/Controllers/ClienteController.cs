@@ -58,16 +58,18 @@ namespace FuncaoSistemas_FM.Controllers
                     {
                         BoBeneficiario boben = new BoBeneficiario();
 
+                        long ClienteID = model.Id;
+
                         foreach (var beneficiario in model.Beneficiarios)
                         {
                             beneficiario.Id = boben.Incluir(new Beneficiario()
                             {
                                 CPF = beneficiario.CPF,
                                 Nome = beneficiario.Nome,
-                                ClienteModelID = beneficiario.ClienteModelID
+                                ClienteModelID = ClienteID
                             });
                         }
-                    }                    
+                    }
 
                     Response.StatusCode = 200;
                     return Json("Cadastro efetuado com sucesso");
@@ -116,7 +118,7 @@ namespace FuncaoSistemas_FM.Controllers
                         Nome = model.Nome,
                         Sobrenome = model.Sobrenome,
                         Telefone = model.Telefone,
-                        CPF = FormataCPF(model.CPF)                        
+                        CPF = FormataCPF(model.CPF)
                     });
 
                     if (model.Beneficiarios.Count() > 0)
@@ -133,7 +135,7 @@ namespace FuncaoSistemas_FM.Controllers
                                 ClienteModelID = beneficiario.ClienteModelID
                             });
                         }
-                    }                    
+                    }
 
                     return Json("Cadastro alterado com sucesso");
                 }
@@ -171,9 +173,9 @@ namespace FuncaoSistemas_FM.Controllers
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
                     Telefone = cliente.Telefone,
-                    CPF = cliente.CPF                    
+                    CPF = cliente.CPF
                 };
-                
+
                 if (model.Beneficiarios.Count() > 0)
                 {
                     boben.Excluir(model.Id);
@@ -187,7 +189,7 @@ namespace FuncaoSistemas_FM.Controllers
                             ClienteModelID = beneficiario.ClienteModelID
                         });
                     }
-                }                
+                }
 
             }
 
@@ -215,6 +217,58 @@ namespace FuncaoSistemas_FM.Controllers
                 //Return result to jTable
                 Response.StatusCode = 200;
                 return Json(new { Result = "OK", Records = clientes, TotalRecordCount = qtd });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 400;
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AdicionaBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
+        {
+            try
+            {
+                cliente.Beneficiarios.Add(beneficiario);
+                int qtd = cliente.Beneficiarios.Count();
+                Response.StatusCode = 200;
+                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 400;
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ExcluiBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
+        {
+            try
+            {
+                cliente.Beneficiarios.Remove(beneficiario);
+                int qtd = cliente.Beneficiarios.Count();
+                Response.StatusCode = 200;
+                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 400;
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AlteraBeneficiario(BeneficiarioModel beneficiario, ClienteModel cliente)
+        {
+            try
+            {
+                cliente.Beneficiarios.Remove(beneficiario);
+                cliente.Beneficiarios.Add(beneficiario);
+                int qtd = cliente.Beneficiarios.Count();
+                Response.StatusCode = 200;
+                return Json(new { Result = "OK", Records = cliente.Beneficiarios, TotalRecordCount = qtd });
             }
             catch (Exception ex)
             {
