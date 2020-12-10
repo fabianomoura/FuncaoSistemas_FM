@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infra_FM.DML
+﻿namespace Infra_FM.DML
 {
     public class Beneficiario
     {
@@ -14,8 +8,6 @@ namespace Infra_FM.DML
        
         public string CPF { get; set; }
         
-        public long ClienteModelID { get; set; }
-
-        //public Cliente Cliente { get; set; }
+        public long ClienteModelID { get; set; }        
     }
 }
