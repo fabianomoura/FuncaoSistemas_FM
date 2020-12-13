@@ -26,6 +26,8 @@
             $("#doc").inputmask("999.999.999-99");
             $("#CPF").inputmask("999.999.999-99");
             $("#btn-salvar").bind("click", function () {
+                e.preventDefault();
+
                 $.ajax({
                     url: "/Cliente/Incluir"
                     , data: $('#formCadastro *').serialize()
