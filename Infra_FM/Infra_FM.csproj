@@ -83,11 +83,13 @@
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_IncBeneficiario2.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_PesqBeneficiario.sql" />
     <Content Include="DAL\Beneficiarios\Procedures\FI_SP_VerificaBeneficiario.sql" />
+    <Content Include="DAL\Beneficiarios\Procedures\FI_SP_VerificaBeneficiarioV2.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_AltCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_ConsCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_DelCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_IncCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_PesqCliente.sql" />
+    <Content Include="DAL\Clientes\Procedures\FI_SP_VerificaClienteV2.sql" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\BoBeneficiario.cs" />

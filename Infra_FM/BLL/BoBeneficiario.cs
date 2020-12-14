@@ -71,5 +71,19 @@ namespace Infra_FM.BLL
 
             return ben.VerificarExistencia(valor, idCliente);
         }
+
+        public bool VerificarExistencia(string CPF, long idCliente, long idBeneficiario)
+        {
+            string valor = CPF;
+            if (CPF.Length > 11)
+            {
+                valor = valor.Replace(".", "");
+                valor = valor.Replace("-", "");
+            }
+
+            DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();
+
+            return ben.VerificarExistencia(valor, idCliente, idBeneficiario);
+        }
     }
 }

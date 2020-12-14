@@ -69,7 +69,7 @@ namespace Infra_FM.BLL
         /// </summary>
         /// <param name="CPF"></param>
         /// <returns></returns>
-        public bool VerificarExistencia(string CPF)
+        public bool VerificarExistencia(string CPF, long id)
         {
             string valor = CPF;
             if (CPF.Length > 11)
@@ -77,6 +77,20 @@ namespace Infra_FM.BLL
                 valor = valor.Replace(".", "");
                 valor = valor.Replace("-", "");
             }            
+
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+
+            return cli.VerificarExistencia(valor, id);
+        }
+
+        public bool VerificarExistencia(string CPF)
+        {
+            string valor = CPF;
+            if (CPF.Length > 11)
+            {
+                valor = valor.Replace(".", "");
+                valor = valor.Replace("-", "");
+            }
 
             DAL.DaoCliente cli = new DAL.DaoCliente();
 

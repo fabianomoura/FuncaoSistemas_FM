@@ -1,18 +1,8 @@
 ﻿@model FuncaoSistemas_FM.Models.ClienteModel
 
 @{
-    /**/
-
-    /**/
-
     ViewBag.Title = "Alterar Cliente";
     ViewBag.Alterar = true;    
-    var UF = new[]
-{
-new SelectListItem(){ Value = "", Text = "Selecione"},
-new SelectListItem(){ Value = "SP", Text = "São Paulo"},
-new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
-};
 }
 
 <h2>@Html.Raw(ViewBag.Title)</h2>
@@ -37,20 +27,7 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
             $("#doc").inputmask("999.999.999-99");
             $("#CPF").inputmask("999.999.999-99");
             $("#btn-salvar").bind("click", function (e) {
-                e.preventDefault();
-
-                var clien = new Object();
-                clien.Id = $('#Id').val();
-                clien.Nome = $('#Nome').val();
-                clien.Sobrenome = $('#Sobrenome').val();
-                clien.CPF = $('#CPF').val();
-                clien.Nacionalidade = $('#Nacionalidade').val();
-                clien.CEP = $('#CEP').val();
-                clien.Estado = $('#Estado').val();
-                clien.Cidade = $('#Cidade').val();
-                clien.Logradouro = $('#Logradouro').val();
-                clien.Email = $('#Email').val();                                                
-                clien.Telefone = $('#Telefone').val();                                                                    
+                e.preventDefault();                                                                   
 
                 $.ajax({
                     url: "/Cliente/Alterar"

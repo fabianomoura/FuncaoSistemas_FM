@@ -38,7 +38,7 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-                if (Models.Util.ValidaCPF(model.CPF))
+                if (ValidarCPFCliente(model.CPF, model.Id))
                 {
                     model.Id = bo.Incluir(new Cliente()
                     {
@@ -55,17 +55,26 @@ namespace FuncaoSistemas_FM.Controllers
                     });
 
                     if (model.Beneficiarios.Count() > 0)
-                    {                        
+                    {
                         long ClienteID = model.Id;
 
                         foreach (var beneficiario in model.Beneficiarios)
                         {
-                            beneficiario.Id = boben.Incluir(new Beneficiario()
+                            if (ValidarCPFBeneficiario(beneficiario.CPF, ClienteID, beneficiario.Id))
                             {
-                                CPF = Models.Util.FormataCPF(beneficiario.CPF),
-                                Nome = beneficiario.Nome,
-                                ClienteModelID = ClienteID
-                            });
+                                beneficiario.Id = boben.Incluir(new Beneficiario()
+                                {
+                                    CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                    Nome = beneficiario.Nome,
+                                    ClienteModelID = ClienteID
+                                });
+                            }
+                            else
+                            {
+                                Response.StatusCode = 400;
+                                var msg = "CPF do Beneficiario " + beneficiario.Nome + " inválido ou já cadastrado";
+                                return Json(msg);
+                            }
                         }
                     }
 
@@ -75,7 +84,7 @@ namespace FuncaoSistemas_FM.Controllers
                 else
                 {
                     Response.StatusCode = 400;
-                    return Json("CPF Inválido!");
+                    return Json("CPF Inválido ou já cadastrado!");
                 }
             }
         }
@@ -104,7 +113,7 @@ namespace FuncaoSistemas_FM.Controllers
             }
             else
             {
-                if (Models.Util.ValidaCPF(model.CPF))
+                if (ValidarCPFCliente(model.CPF, model.Id))
                 {
                     bo.Alterar(new Cliente()
                     {
@@ -122,31 +131,42 @@ namespace FuncaoSistemas_FM.Controllers
                     });
 
                     if (model.Beneficiarios.Count() > 0)
-                    {                                                
+                    {
                         foreach (var beneficiario in model.Beneficiarios)
                         {
-                            if (beneficiario.Id == 0)
+                            if (ValidarCPFBeneficiario(beneficiario.CPF, model.Id, beneficiario.Id))
                             {
-                                beneficiario.Id = boben.Incluir(new Beneficiario()
+                                if (beneficiario.Id == 0)
                                 {
-                                    CPF = Models.Util.FormataCPF(beneficiario.CPF),
-                                    Nome = beneficiario.Nome,
-                                    ClienteModelID = model.Id
-                                });
-                            } else
-                            {
-                                boben.Alterar(new Beneficiario()
+                                    beneficiario.Id = boben.Incluir(new Beneficiario()
+                                    {
+                                        CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                        Nome = beneficiario.Nome,
+                                        ClienteModelID = model.Id
+                                    });
+                                }
+                                else
                                 {
-                                    Id = beneficiario.Id,
-                                    CPF = Models.Util.FormataCPF(beneficiario.CPF),
-                                    Nome = beneficiario.Nome                                                                       
-                                });
+                                    boben.Alterar(new Beneficiario()
+                                    {
+                                        Id = beneficiario.Id,
+                                        CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                        Nome = beneficiario.Nome
+                                    });
 
+                                }
+                            }
+                            else
+                            {
+                                Response.StatusCode = 400;
+                                var msg = "CPF do Beneficiario " + beneficiario.Nome + " inválido ou já cadastrado";
+                                return Json(msg);
                             }
                         }
-                    } else
-                    {                        
-                        foreach(var benef in boben.Listar(idCliente))
+                    }
+                    else
+                    {
+                        foreach (var benef in boben.Listar(idCliente))
                         {
                             BeneficiarioModel ben1 = new BeneficiarioModel();
                             ben1.CPF = Models.Util.FormataCPF(benef.CPF);
@@ -162,7 +182,7 @@ namespace FuncaoSistemas_FM.Controllers
                 else
                 {
                     Response.StatusCode = 400;
-                    return Json("CPF inválido!");
+                    return Json("CPF inválido ou já cadastrado!");
                 }
 
 
@@ -197,7 +217,7 @@ namespace FuncaoSistemas_FM.Controllers
                 };
 
                 if (model.Beneficiarios.Count() > 0)
-                {                   
+                {
                     foreach (var beneficiario in model.Beneficiarios)
                     {
                         if (beneficiario.Id == 0)
@@ -209,7 +229,8 @@ namespace FuncaoSistemas_FM.Controllers
                                 ClienteModelID = cliente.Id
                             });
                         }
-                        else {
+                        else
+                        {
                             boben.Alterar(new Beneficiario()
                             {
                                 Id = beneficiario.Id,
@@ -218,8 +239,9 @@ namespace FuncaoSistemas_FM.Controllers
                             });
                         }
                     }
-                } else
-                {                    
+                }
+                else
+                {
                     foreach (var benef in cliente.Beneficiarios)
                     {
                         BeneficiarioModel ben1 = new BeneficiarioModel();
@@ -231,16 +253,60 @@ namespace FuncaoSistemas_FM.Controllers
                     }
                 }
 
-            }            
+            }
             return View(model);
         }
 
         [HttpPost]
         public void RemoverBeneficiario(int id)
-        {            
+        {
             BoBeneficiario boben = new BoBeneficiario();
 
-            boben.Remover(id);            
+            boben.Remover(id);
+        }
+
+        [HttpPost]
+        public Boolean ValidarCPF(string Cpf)
+        {
+            return Models.Util.ValidaCPF(Cpf);
+        }
+
+        [HttpPost]
+        public Boolean ValidarCPFCliente(string Cpf, long Id)
+        {
+            if (Models.Util.ValidaCPF(Cpf))
+            {
+                BoCliente bo = new BoCliente();
+                if (Id != 0)
+                {
+                    return !bo.VerificarExistencia(Models.Util.FormataCPF(Cpf), Id);
+                }
+                else
+                {
+                    return !bo.VerificarExistencia(Models.Util.FormataCPF(Cpf));
+                }
+            }
+            else
+                return false;
+        }
+
+        [HttpPost]
+        public Boolean ValidarCPFBeneficiario(string Cpf, long Idcliente, long IdBeneficiario)
+        {
+            if (Models.Util.ValidaCPF(Cpf))
+            {
+                BoBeneficiario boben = new BoBeneficiario();
+                if (IdBeneficiario != 0)
+                {
+                    return !boben.VerificarExistencia(Models.Util.FormataCPF(Cpf), Idcliente, IdBeneficiario);
+                }
+                else
+                {
+                    return !boben.VerificarExistencia(Models.Util.FormataCPF(Cpf), Idcliente);
+                }
+            }
+            else
+                return false;
         }
 
         [HttpPost]
@@ -270,6 +336,6 @@ namespace FuncaoSistemas_FM.Controllers
                 Response.StatusCode = 400;
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
-        }        
+        }
     }
 }

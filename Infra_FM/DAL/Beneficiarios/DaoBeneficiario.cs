@@ -59,6 +59,19 @@ namespace Infra_FM.DAL
             return ds.Tables[0].Rows.Count > 0;
         }
 
+        internal bool VerificarExistencia(string CPF, long idCliente, long idBeneficiario)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
+
+            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", CPF));
+            parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", idCliente));
+            parametros.Add(new System.Data.SqlClient.SqlParameter("IDBENEFICIARIO", idBeneficiario));
+
+            DataSet ds = base.Consultar("FI_SP_VerificaBeneficiarioV2", parametros);
+
+            return ds.Tables[0].Rows.Count > 0;
+        }
+
         internal List<Beneficiario> Pesquisa(long idcliente, int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
             List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
