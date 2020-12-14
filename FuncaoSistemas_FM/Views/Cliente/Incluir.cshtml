@@ -88,7 +88,7 @@
 
                 var blocoBeneficiario = '<div class="row">' +
                     '    <div class="col-md-4">' +
-                    '        <input type="number" name="Beneficiarios[' + qtdBeneficiarios + '].CPF" maxlength="14" placeholder="CPF" class="form-control txt-cpf"/>' +
+                    '        <input type="text" name="Beneficiarios[' + qtdBeneficiarios + '].CPF" maxlength="14" placeholder="CPF" class="form-control txt-cpf"/>' +
                     '    </div>' +
                     '    <div class="col-md-6">' +
                     '        <input type="text" name="Beneficiarios[' + qtdBeneficiarios + '].Nome" placeholder="Nome" class="form-control txt-nome" />' +
@@ -102,9 +102,13 @@
 
                 $("#div-beneficiarios").append(blocoBeneficiario);
 
+                $("#div-beneficiarios .row").each(function (indice, elemento) {
+                    $(elemento).find(".txt-cpf").inputmask("999.999.999-99");                    
+                });
+
                 qtdBeneficiarios++;
             });
-
+            
             $("#div-beneficiarios").on("click", ".btn-remover-beneficiario", function (e) {
                 e.preventDefault();
 
@@ -113,7 +117,7 @@
                 qtdBeneficiarios--;
 
                 $("#div-beneficiarios .row").each(function (indice, elemento) {
-                    $(elemento).find(".txt-cpf").attr("name", "Bneficiarios[" + indice + "].CPF");
+                    $(elemento).find(".txt-cpf").attr("name", "Beneficiarios[" + indice + "].CPF").inputmask("999.999.999-99");
                     $(elemento).find(".txt-nome").attr("name", "Beneficiarios[" + indice + "].Nome");
                 });
             });
