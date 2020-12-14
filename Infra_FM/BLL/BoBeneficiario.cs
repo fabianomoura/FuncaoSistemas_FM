@@ -22,10 +22,22 @@ namespace Infra_FM.BLL
             return ben.Consultar(Cpf, Idcliente);
         }
 
+        public DML.Beneficiario Consultar(long Id)
+        {
+            DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();
+            return ben.Consultar(Id);
+        }
+
         public void Excluir(string Cpf, long Idcliente)
         {
             DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();
             ben.Excluir(Cpf, Idcliente);
+        }
+
+        public void Remover(long id)
+        {
+            DAL.DaoBeneficiario ben = new DAL.DaoBeneficiario();
+            ben.Remover(id);
         }
 
         public void Excluir(long Idcliente)

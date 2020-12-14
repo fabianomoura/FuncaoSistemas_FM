@@ -71,6 +71,6 @@ namespace FuncaoSistemas_FM.Models
         [Required(ErrorMessage = "Digite um CPF válido")]
         public string CPF { get; set; }
 
-        public ICollection<BeneficiarioModel> Beneficiarios { get; set; }
+        public List<BeneficiarioModel> Beneficiarios { get; set; }
     }
 }

@@ -51,7 +51,7 @@ namespace FuncaoSistemas_FM.Controllers
                         Nome = model.Nome,
                         Sobrenome = model.Sobrenome,
                         Telefone = model.Telefone,
-                        CPF = model.CPF
+                        CPF = Models.Util.FormataCPF(model.CPF)
                     });
 
                     if (model.Beneficiarios.Count() > 0)
@@ -62,7 +62,7 @@ namespace FuncaoSistemas_FM.Controllers
                         {
                             beneficiario.Id = boben.Incluir(new Beneficiario()
                             {
-                                CPF = beneficiario.CPF,
+                                CPF = Models.Util.FormataCPF(beneficiario.CPF),
                                 Nome = beneficiario.Nome,
                                 ClienteModelID = ClienteID
                             });
@@ -91,6 +91,7 @@ namespace FuncaoSistemas_FM.Controllers
         {
             BoCliente bo = new BoCliente();
             BoBeneficiario boben = new BoBeneficiario();
+            long idCliente = model.Id;
 
             if (!this.ModelState.IsValid)
             {
@@ -121,17 +122,38 @@ namespace FuncaoSistemas_FM.Controllers
                     });
 
                     if (model.Beneficiarios.Count() > 0)
-                    {                        
-                        boben.Excluir(model.Id);
-
+                    {                                                
                         foreach (var beneficiario in model.Beneficiarios)
                         {
-                            beneficiario.Id = boben.Incluir(new Beneficiario()
+                            if (beneficiario.Id == 0)
                             {
-                                CPF = beneficiario.CPF,
-                                Nome = beneficiario.Nome,
-                                ClienteModelID = beneficiario.ClienteModelID
-                            });
+                                beneficiario.Id = boben.Incluir(new Beneficiario()
+                                {
+                                    CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                    Nome = beneficiario.Nome,
+                                    ClienteModelID = model.Id
+                                });
+                            } else
+                            {
+                                boben.Alterar(new Beneficiario()
+                                {
+                                    Id = beneficiario.Id,
+                                    CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                    Nome = beneficiario.Nome                                                                       
+                                });
+
+                            }
+                        }
+                    } else
+                    {                        
+                        foreach(var benef in boben.Listar(idCliente))
+                        {
+                            BeneficiarioModel ben1 = new BeneficiarioModel();
+                            ben1.CPF = Models.Util.FormataCPF(benef.CPF);
+                            ben1.Nome = benef.Nome;
+                            ben1.Id = benef.Id;
+                            ben1.ClienteModelID = benef.ClienteModelID;
+                            model.Beneficiarios.Add(ben1);
                         }
                     }
 
@@ -171,26 +193,54 @@ namespace FuncaoSistemas_FM.Controllers
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
                     Telefone = cliente.Telefone,
-                    CPF = cliente.CPF
+                    CPF = Models.Util.FormataCPF(cliente.CPF)
                 };
 
                 if (model.Beneficiarios.Count() > 0)
-                {
-                    boben.Excluir(model.Id);
-
+                {                   
                     foreach (var beneficiario in model.Beneficiarios)
                     {
-                        beneficiario.Id = boben.Incluir(new Beneficiario()
+                        if (beneficiario.Id == 0)
                         {
-                            CPF = beneficiario.CPF,
-                            Nome = beneficiario.Nome,
-                            ClienteModelID = beneficiario.ClienteModelID
-                        });
+                            beneficiario.Id = boben.Incluir(new Beneficiario()
+                            {
+                                CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                Nome = beneficiario.Nome,
+                                ClienteModelID = cliente.Id
+                            });
+                        }
+                        else {
+                            boben.Alterar(new Beneficiario()
+                            {
+                                Id = beneficiario.Id,
+                                CPF = Models.Util.FormataCPF(beneficiario.CPF),
+                                Nome = beneficiario.Nome
+                            });
+                        }
+                    }
+                } else
+                {                    
+                    foreach (var benef in cliente.Beneficiarios)
+                    {
+                        BeneficiarioModel ben1 = new BeneficiarioModel();
+                        ben1.CPF = Models.Util.FormataCPF(benef.CPF);
+                        ben1.Nome = benef.Nome;
+                        ben1.Id = benef.Id;
+                        ben1.ClienteModelID = benef.ClienteModelID;
+                        model.Beneficiarios.Add(ben1);
                     }
                 }
 
             }            
             return View(model);
+        }
+
+        [HttpPost]
+        public void RemoverBeneficiario(int id)
+        {            
+            BoBeneficiario boben = new BoBeneficiario();
+
+            boben.Remover(id);            
         }
 
         [HttpPost]

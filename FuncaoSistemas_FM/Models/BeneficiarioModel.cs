@@ -9,7 +9,7 @@ namespace FuncaoSistemas_FM.Models
         [Required(ErrorMessage = "Digite um nome completo de beneficiário")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "Digite um CPF válido")]
+        [Required(ErrorMessage = "Digite um CPF válido Ben")]
         public string CPF { get; set; }
 
         public long ClienteModelID { get; set; }       

@@ -6,8 +6,9 @@
     /**/
 
     ViewBag.Title = "Alterar Cliente";
+    ViewBag.Alterar = true;    
     var UF = new[]
-    {
+{
 new SelectListItem(){ Value = "", Text = "Selecione"},
 new SelectListItem(){ Value = "SP", Text = "São Paulo"},
 new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
@@ -37,6 +38,19 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
             $("#CPF").inputmask("999.999.999-99");
             $("#btn-salvar").bind("click", function (e) {
                 e.preventDefault();
+
+                var clien = new Object();
+                clien.Id = $('#Id').val();
+                clien.Nome = $('#Nome').val();
+                clien.Sobrenome = $('#Sobrenome').val();
+                clien.CPF = $('#CPF').val();
+                clien.Nacionalidade = $('#Nacionalidade').val();
+                clien.CEP = $('#CEP').val();
+                clien.Estado = $('#Estado').val();
+                clien.Cidade = $('#Cidade').val();
+                clien.Logradouro = $('#Logradouro').val();
+                clien.Email = $('#Email').val();                                                
+                clien.Telefone = $('#Telefone').val();                                                                    
 
                 $.ajax({
                     url: "/Cliente/Alterar"
@@ -87,17 +101,17 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
                 };
             });
 
-            var qtdBeneficiarios = 0;
+            var qtdBeneficiarios = $("#div-beneficiarios .row").length;
 
             $("#btn-incluir-beneficiario").click(function (e) {
                 e.preventDefault();
 
                 var blocoBeneficiario = '<div class="row">' +
                     '    <div class="col-md-4">' +
-                    '        <input type="number" name="Beneficiarios[' + qtdBeneficiarios + '].CPF" maxlength="14" placeholder="CPF" class="form-control txt-cpf"/>' +
+                    '        <input type="number" name="Beneficiarios[' + qtdBeneficiarios + '].CPF" maxlength="14" placeholder="CPF" class="form-control txt-cpf" ID="Beneficiarios[' + qtdBeneficiarios + '].CPF"/>' +
                     '    </div>' +
                     '    <div class="col-md-6">' +
-                    '        <input type="text" name="Beneficiarios[' + qtdBeneficiarios + '].Nome" placeholder="Nome" class="form-control txt-nome" />' +
+                    '        <input type="text" name="Beneficiarios[' + qtdBeneficiarios + '].Nome" placeholder="Nome" class="form-control txt-nome" ID="Beneficiarios[' + qtdBeneficiarios + '].Nome"/>' +
                     '    </div>' +
                     '    <div class="col-md-2">' +
                     '        <button class="btn btn-danger btn-remover-beneficiario">' +
@@ -114,6 +128,11 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
             $("#div-beneficiarios").on("click", ".btn-remover-beneficiario", function (e) {
                 e.preventDefault();
 
+                var id = $(this).attr("data-id");
+
+                if (id)
+                    $.post("/Cliente/RemoverBeneficiario?id=" + id);
+
                 $(this).parent().parent().remove();
 
                 qtdBeneficiarios--;
@@ -121,6 +140,8 @@ new SelectListItem(){ Value = "PE", Text = "Pernambuco"}
                 $("#div-beneficiarios .row").each(function (indice, elemento) {
                     $(elemento).find(".txt-cpf").attr("name", "Bneficiarios[" + indice + "].CPF");
                     $(elemento).find(".txt-nome").attr("name", "Beneficiarios[" + indice + "].Nome");
+                    $(elemento).find(".txt-cpf").attr("ID", "Bneficiarios[" + indice + "].CPF");
+                    $(elemento).find(".txt-nome").attr("ID", "Beneficiarios[" + indice + "].Nome");
                 });
             });
 

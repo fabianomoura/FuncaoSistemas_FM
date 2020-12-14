@@ -35,6 +35,18 @@ namespace Infra_FM.DAL
             return ben.FirstOrDefault();
         }
 
+        internal DML.Beneficiario Consultar(long Id)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
+            
+            parametros.Add(new System.Data.SqlClient.SqlParameter("ID", Id));
+
+            DataSet ds = base.Consultar("FI_SP_ConsBeneficiarioV3", parametros);
+            List<DML.Beneficiario> ben = Converter(ds);
+
+            return ben.FirstOrDefault();
+        }
+
         internal bool VerificarExistencia(string CPF, long idCliente)
         {
             List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
@@ -110,6 +122,15 @@ namespace Infra_FM.DAL
             parametros.Add(new System.Data.SqlClient.SqlParameter("IDCLIENTE", Idcliente));            
 
             base.Executar("FI_SP_DelBeneficiario3", parametros);
+        }
+
+        internal void Remover(long Id)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
+
+            parametros.Add(new System.Data.SqlClient.SqlParameter("ID", Id));
+
+            base.Executar("FI_SP_DelBeneficiario4", parametros);
         }
 
         private List<DML.Beneficiario> Converter(DataSet ds)

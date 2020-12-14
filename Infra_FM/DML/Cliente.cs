@@ -66,6 +66,6 @@ namespace Infra_FM.DML
         /// </summary>
         public string CPF { get; set; }
 
-        public ICollection<Beneficiario> Beneficiarios { get; set; }
+        public List<Beneficiario> Beneficiarios { get; set; }
     }    
 }
