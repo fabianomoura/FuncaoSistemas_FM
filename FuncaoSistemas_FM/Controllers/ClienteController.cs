@@ -10,6 +10,8 @@ namespace FuncaoSistemas_FM.Controllers
 {
     public class ClienteController : Controller
     {
+        string mensagem = null;
+
         public ActionResult Index()
         {
             return View();
@@ -72,19 +74,21 @@ namespace FuncaoSistemas_FM.Controllers
                             else
                             {
                                 Response.StatusCode = 400;
-                                var msg = "CPF do Beneficiario " + beneficiario.Nome + " inválido ou já cadastrado";
-                                return Json(msg);
+                                mensagem = @"{""Titulo"": ""Erro"", ""Mensagem"": ""CPF do Beneficiario ' + beneficiario.Nome + ' inválido ou já cadastrado""}";
+                                return Json(mensagem);
                             }
                         }
                     }
 
                     Response.StatusCode = 200;
-                    return Json("Cadastro efetuado com sucesso");
+                    mensagem = @"{""Titulo"": ""Sucesso"", ""Mensagem"": ""Cadastro efetuado com sucesso""}";
+                    return Json(mensagem);
                 }
                 else
                 {
                     Response.StatusCode = 400;
-                    return Json("CPF Inválido ou já cadastrado!");
+                    mensagem = @"{""Titulo"": ""Erro"", ""Mensagem"": ""CPF Inválido ou já cadastrado!""}";
+                    return Json(mensagem);
                 }
             }
         }
@@ -159,8 +163,8 @@ namespace FuncaoSistemas_FM.Controllers
                             else
                             {
                                 Response.StatusCode = 400;
-                                var msg = "CPF do Beneficiario " + beneficiario.Nome + " inválido ou já cadastrado";
-                                return Json(msg);
+                                mensagem = @"{""Titulo"": ""Erro"", ""Mensagem"": ""CPF do Beneficiario ' + beneficiario.Nome + ' inválido ou já cadastrado""}";
+                                return Json(mensagem);
                             }
                         }
                     }
@@ -176,13 +180,15 @@ namespace FuncaoSistemas_FM.Controllers
                             model.Beneficiarios.Add(ben1);
                         }
                     }
-
-                    return Json("Cadastro alterado com sucesso");
+                    Response.StatusCode = 200;
+                    mensagem = @"{""Titulo"": ""Erro"", ""Mensagem"": ""Cadastro alterado com sucesso""}";
+                    return Json(mensagem);
                 }
                 else
                 {
                     Response.StatusCode = 400;
-                    return Json("CPF inválido ou já cadastrado!");
+                    mensagem = @"{""Titulo"": ""Erro"", ""Mensagem"": ""CPF inválido ou já cadastrado!""}";
+                    return Json(mensagem);
                 }
 
 

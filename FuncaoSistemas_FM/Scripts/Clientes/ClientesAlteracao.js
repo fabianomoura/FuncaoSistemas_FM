@@ -9,20 +9,35 @@
             , data: $('#formCadastro *').serialize()
             , type: 'POST'
             , dataType: 'json'
-            , success: function (json) {
-                ModalDialog("Sucesso", json.responseText);
+            , success: function (data) {
+                var retorno = JSON.parse(data);
+                if (retorno.Mensagem == null) {
+                  retorno.Mensagem = "Alterado com sucesso";
+                }
+                ModalDialog("Sucesso", retorno.Mensagem);               
+
                 $("formCadastro")[0].reset();
                 return true;
             }
-            , error: function (json) {
-                if (json.status == 400) {
-                    ModalDialog("Ocorreu um erro", json.responseText);
+            , error: function (data) {
+                var retorno = JSON.parse(data);
+                if (data.status == 400) {
+                    if (retorno.Mensagem == null) {
+                      retorno.Mensagem = "Erro desconhecido ou dado informado inválido";
+                    }
+                    ModalDialog("Ocorreu um erro", retorno.Mensagem);
                     return false;
-                } else if (json.status == 500) {
-                    ModalDialog("Ocorreu um erro", "Erro Interno no Servidor");
+                } else if (data.status == 500) {
+                    if (retorno.Mensagem == null) {
+                      retorno.Mensagem = "Erro Interno no Servidor";
+                    }
+                    ModalDialog("Ocorreu um erro", retorno.Mensagem);
                     return false;
                 } else {
-                    ModalDialog("Erro Desconhecido", json.responseText);
+                    if (retorno.Mensagem == null) {
+                      retorno.Mensagem = "Erro desconhecido";
+                    }
+                    ModalDialog("Erro Desconhecido", retorno.Mensagem);
                     return false;
                 }
             }
