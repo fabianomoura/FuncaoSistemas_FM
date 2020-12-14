@@ -35,10 +35,15 @@ namespace FuncaoSistemas_FM
             bundles.Add(new ScriptBundle("~/bundles/listClientes").Include(
                       "~/Scripts/Clientes/FI.ListClientes.js"));
             bundles.Add(new ScriptBundle("~/bundles/altClientes").Include(
-                      "~/Scripts/Clientes/FI.AltClientes.js"));
+                      "~/Scripts/Clientes/FI.AltClientes.js"));            
 
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
             "~/Scripts/inputmask/jquery.inputmask.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/CliAlt").Include(
+                      "~/Scripts/Clientes/ClientesAlteracao.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CliInclud").Include(
+                      "~/Scripts/Clientes/ClientesInclusao.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
